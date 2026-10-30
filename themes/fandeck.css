@@ -1,0 +1,560 @@
+/* Fan deck: a paint-counter look. Enamel-green side rail, and dashboard figures
+   shown as paint chips from a colour fan deck. Sitka (serif) for headings,
+   Segoe UI Variable for working text; both ship with Windows. */
+
+:root {
+  --bg: #e9edeb;
+  --card: #fbfcfb;
+  --primary: #1e3b34;
+  --primary-dark: #1e3b34;
+  --accent: #d9a441;
+  --danger: #a9473a;
+  --text: #1a2421;
+  --muted: #5d6965;
+  --border: #d3dad6;
+  --shadow: 0 1px 2px rgba(26, 36, 33, 0.06);
+  --success: #2f7f5a;
+  --warning: #b9792a;
+  --rail: #1e3b34;
+  --rail-ink: #cfe0d9;
+  --chip-ochre: #d9a441;
+  --chip-teal: #2f7f86;
+  --chip-sage: #7f9f7c;
+  --chip-moss: #4f6f3a;
+  --chip-slate: #5b6c8f;
+  --chip-plum: #7a4e6e;
+  --chip-brick: #a9473a;
+  --serif: "Sitka Heading", "Sitka Text", Georgia, "Times New Roman", serif;
+  --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Sitka defaults to old-style figures, where 0 reads like the letter o. */
+h1,
+h2,
+h3,
+strong,
+.shop-display strong {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--chip-ochre);
+  outline-offset: 2px;
+}
+
+/* ---------- side rail layout ---------- */
+.app-shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  max-width: none;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.topbar {
+  grid-column: 1;
+  grid-row: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 26px 22px 18px;
+  border-radius: 0;
+  background: var(--rail);
+  box-shadow: none;
+}
+
+.eyebrow {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.82rem;
+  color: var(--rail-ink);
+  opacity: 0.8;
+}
+
+.topbar h1 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.65rem;
+  line-height: 1.15;
+}
+
+.shop-display {
+  align-items: flex-start;
+  width: 100%;
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(207, 224, 217, 0.22);
+}
+
+.shop-display span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8rem;
+  color: var(--rail-ink);
+}
+
+.shop-display strong {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.shop-display .shop-contact-display {
+  max-width: 100%;
+}
+
+.current-date-display {
+  position: static;
+  order: -1;
+  color: var(--rail-ink);
+  opacity: 0.75;
+}
+
+.topbar-action {
+  width: 100%;
+  border-radius: 6px;
+  border-color: rgba(207, 224, 217, 0.35);
+  color: var(--rail-ink);
+  text-align: left;
+}
+
+.shop-settings-panel {
+  position: fixed;
+  top: 20px;
+  left: 260px;
+  right: auto;
+  width: 320px;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border-radius: 8px;
+  box-shadow: 0 18px 48px rgba(26, 36, 33, 0.22);
+}
+
+.tab-bar {
+  grid-column: 1;
+  grid-row: 2;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 2px;
+  margin: 0;
+  padding: 8px 12px 24px;
+  border: none;
+  border-radius: 0;
+  background: var(--rail);
+  box-shadow: none;
+}
+
+.tab-btn {
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-radius: 6px;
+  color: var(--rail-ink);
+  font-weight: 500;
+  font-size: 0.98rem;
+  text-align: left;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+/* The active tab carries a paint-chip edge. */
+.tab-btn.active {
+  background: #fbfcfb;
+  color: var(--rail);
+  font-weight: 600;
+  box-shadow: inset 5px 0 0 var(--chip-ochre);
+}
+
+.tab-count {
+  background: var(--chip-ochre);
+  color: var(--rail);
+  font-weight: 700;
+}
+
+.tab-bar-action {
+  margin: auto 0 0;
+  margin-top: 22px;
+}
+
+.tab-bar .secondary-btn {
+  background: transparent;
+  color: var(--rail-ink);
+  border: 1px solid rgba(207, 224, 217, 0.35);
+  border-radius: 6px;
+}
+
+.tab-bar .secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.layout {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-content: start;
+  margin: 0;
+  padding: 28px 32px 40px;
+}
+
+/* ---------- panels ---------- */
+.dashboard-card,
+.inventory-card,
+.product-form-card,
+.search-card,
+.bill-card,
+.receipt-card,
+.history-card {
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 22px 24px;
+}
+
+.section-heading h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+/* ---------- dashboard: paint chips ---------- */
+.stats-grid {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.stat-box {
+  --chip: var(--chip-sage);
+  position: relative;
+  gap: 4px;
+  padding: 0 14px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* The colour block on top of each chip. */
+.stat-box::before {
+  display: block;
+  height: 54px;
+  margin: 0 -14px 12px;
+  background: var(--chip);
+  content: "";
+}
+
+.stat-box:nth-child(1) { --chip: var(--chip-ochre); }
+.stat-box:nth-child(2) { --chip: var(--chip-teal); }
+.stat-box:nth-child(3) { --chip: var(--chip-moss); }
+.stat-box:nth-child(4) { --chip: var(--chip-sage); }
+.stat-box:nth-child(5) { --chip: var(--chip-slate); }
+.stat-box:nth-child(6) { --chip: var(--chip-plum); }
+.stat-box.warning-box { --chip: var(--chip-brick); }
+
+.sales-box,
+.revenue-box,
+.profit-box,
+.monthly-profit-box,
+.warning-box {
+  background: #fff;
+  border-color: var(--border);
+}
+
+.monthly-profit-box {
+  padding-top: 0;
+}
+
+.stat-box span {
+  order: 2;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stat-box strong {
+  order: 1;
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.stat-box::before {
+  order: 0;
+}
+
+.stat-reset-btn {
+  top: 12px;
+  right: 10px;
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.stat-reset-btn:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.insight-panel {
+  border-radius: 8px;
+  background: #fff;
+}
+
+.out-of-stock-panel {
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: inset 4px 0 0 var(--chip-brick);
+}
+
+.insight-panel h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.08rem;
+}
+
+.insight-row strong {
+  color: var(--primary);
+}
+
+/* ---------- tables ---------- */
+th {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #f1f4f2;
+}
+
+tbody tr:hover {
+  background: #f3f7f5;
+}
+
+.low-stock-row {
+  background: #fbf4e4;
+}
+
+.out-of-stock-row {
+  background: #f8e9e6;
+  color: #7d2f25;
+}
+
+.stock-badge {
+  text-transform: none;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.stock-badge.low {
+  background: #f3e2bb;
+  color: #6e4c0c;
+}
+
+.stock-badge.out {
+  background: #efd2cc;
+  color: #7d2f25;
+}
+
+/* ---------- buttons and fields ---------- */
+.small-btn,
+.primary-btn,
+.secondary-btn,
+.remove-btn,
+.qty-btn,
+.search-add-btn {
+  border-radius: 6px;
+}
+
+.small-btn:hover,
+.primary-btn:hover,
+.secondary-btn:hover,
+.remove-btn:hover,
+.qty-btn:hover,
+.search-add-btn:hover {
+  transform: none;
+}
+
+.primary-btn {
+  background: var(--primary);
+  font-size: 1.02rem;
+  padding: 13px 18px;
+}
+
+.primary-btn:hover {
+  background: #26493f;
+}
+
+.primary-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: #e4ebe7;
+}
+
+.secondary-btn:hover {
+  background: #d8e2dd;
+}
+
+.small-btn {
+  background: #e4ebe7;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.small-btn.delete-btn,
+.remove-btn {
+  background: #f6e3df;
+  color: #7d2f25;
+}
+
+.search-add-btn {
+  background: var(--primary);
+}
+
+.search-add-btn:disabled {
+  background: #a5b1ac;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  border-radius: 6px;
+  background: #fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid rgba(217, 164, 65, 0.6);
+  border-color: var(--primary);
+}
+
+/* ---------- billing ---------- */
+.quick-scan-wrap {
+  border: 1px solid #e6d3a6;
+  border-left: 5px solid var(--chip-ochre);
+  border-radius: 6px;
+  background: #fdf8ec;
+}
+
+.quick-scan-wrap label {
+  color: #6e4c0c;
+}
+
+.search-product-row,
+.bill-item-row,
+.bill-empty,
+.saved-sale {
+  border-radius: 6px;
+  background: #fff;
+}
+
+.qty-btn {
+  background: #eef2f0;
+}
+
+.bill-summary-row {
+  padding-top: 14px;
+}
+
+.bill-summary-row strong {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.payment-summary {
+  background: #eef3f0;
+}
+
+.payment-summary strong {
+  color: var(--primary);
+}
+
+.receipt {
+  border-radius: 4px;
+  background: #fff;
+}
+
+.bill-no-tag {
+  background: #f3e2bb;
+  color: #6e4c0c;
+  font-weight: 600;
+}
+
+/* The rail takes 248px, so the three billing columns stack sooner than in the classic design. */
+@media (max-width: 1560px) {
+  .layout[data-active-tab="bill"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+
+  .layout[data-active-tab="bill"] .receipt-card {
+    grid-column: 1 / -1;
+  }
+}
+
+.search-product-row > div:not(:first-child) {
+  white-space: nowrap;
+}
+
+/* ---------- narrow screens: the rail becomes a top bar ---------- */
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .topbar {
+    padding: 18px 16px;
+  }
+
+  .tab-bar {
+    grid-row: 2;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 12px 12px;
+  }
+
+  .tab-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .tab-bar-action {
+    flex: 1 1 100%;
+    margin-top: 6px;
+  }
+
+  .layout {
+    grid-column: 1;
+    grid-row: 3;
+    padding: 16px;
+  }
+
+  .shop-settings-panel {
+    position: absolute;
+    top: 100%;
+    left: 16px;
+    width: min(320px, calc(100vw - 32px));
+  }
+}

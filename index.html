@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Inventory and Billing Management</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link id="designStylesheet" rel="stylesheet" disabled />
+  </head>
+  <body>
+    <div id="authOverlay" class="auth-overlay hidden">
+      <form id="authForm" class="auth-card" autocomplete="off">
+        <p class="eyebrow" data-i18n="eyebrow">Business Control Panel</p>
+        <h2 id="authHeading" data-i18n="authLoginHeading">Sign In</h2>
+        <p id="authSubtitle" class="auth-subtitle" data-i18n="authLoginSubtitle">Enter your username and password to continue.</p>
+
+        <div id="authUsernameGroup" class="field-group">
+          <label for="authUsernameInput" data-i18n="authUsernameLabel">Username</label>
+          <input id="authUsernameInput" type="text" maxlength="60" autocomplete="username" placeholder="Enter a username" data-i18n-placeholder="authUsernamePlaceholder" />
+        </div>
+
+        <div id="authSecurityQuestionSetGroup" class="field-group hidden">
+          <label for="authSecurityQuestionInput" data-i18n="authSecurityQuestionLabel">Security Question</label>
+          <input id="authSecurityQuestionInput" type="text" maxlength="200" autocomplete="off" placeholder="e.g. What was your first pet's name?" data-i18n-placeholder="authSecurityQuestionPlaceholder" />
+        </div>
+
+        <p id="authRecoveryQuestionText" class="auth-recovery-question hidden"></p>
+
+        <div id="authSecurityAnswerGroup" class="field-group hidden">
+          <label id="authSecurityAnswerLabel" for="authSecurityAnswerInput" data-i18n="authSecurityAnswerLabel">Security Answer</label>
+          <input id="authSecurityAnswerInput" type="text" maxlength="200" autocomplete="off" placeholder="Your answer" data-i18n-placeholder="authSecurityAnswerPlaceholder" />
+        </div>
+
+        <div id="authPasswordGroup" class="field-group">
+          <label id="authPasswordLabel" for="authPasswordInput" data-i18n="authPasswordLabel">Password</label>
+          <input id="authPasswordInput" type="password" maxlength="200" autocomplete="current-password" placeholder="Enter a password" data-i18n-placeholder="authPasswordPlaceholder" />
+        </div>
+        <div id="authConfirmGroup" class="field-group hidden">
+          <label id="authConfirmPasswordLabel" for="authConfirmPasswordInput" data-i18n="authConfirmPasswordLabel">Confirm Password</label>
+          <input id="authConfirmPasswordInput" type="password" maxlength="200" autocomplete="new-password" placeholder="Re-enter the password" data-i18n-placeholder="authConfirmPasswordPlaceholder" />
+        </div>
+
+        <button id="authSubmitBtn" type="submit" class="primary-btn full-width" data-i18n="authSignInBtn">Sign In</button>
+        <p id="authFormMessage" class="form-message" aria-live="polite"></p>
+        <button id="authForgotPasswordBtn" type="button" class="link-btn" data-i18n="authForgotPasswordLink">Forgot password?</button>
+        <button id="authBackToLoginBtn" type="button" class="link-btn hidden" data-i18n="authBackToLoginLink">Back to Sign In</button>
+      </form>
+    </div>
+
+    <div class="app-shell hidden" id="appShell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" data-i18n="eyebrow">Business Control Panel</p>
+          <h1 data-i18n="appTitle">Shop Inventory & Billing</h1>
+        </div>
+        <div class="shop-display">
+          <span data-i18n="shopLabel">Shop</span>
+          <strong id="shopDisplayName">MY SHOP NAME</strong>
+          <span id="shopPhoneDisplay" class="shop-contact-display hidden"></span>
+          <span id="shopAddressDisplay" class="shop-contact-display hidden"></span>
+          <span id="connectionStatus" class="connection-status checking">Connecting...</span>
+          <button id="shopSettingsBtn" type="button" class="topbar-action" aria-expanded="false" data-i18n="shopSettings">Shop Settings</button>
+        </div>
+        <div id="shopSettingsPanel" class="shop-settings-panel hidden">
+          <div class="section-heading">
+            <h2 data-i18n="shopSettings">Shop Settings</h2>
+          </div>
+          <div class="field-group">
+            <label for="shopNameInput" data-i18n="shopNameLabel">Shop Name</label>
+            <input id="shopNameInput" type="text" maxlength="120" placeholder="Enter your shop name" data-i18n-placeholder="shopNamePlaceholder" />
+          </div>
+          <div class="field-group">
+            <label for="shopPhoneInput" data-i18n="phoneLabel">Phone Number</label>
+            <input id="shopPhoneInput" type="tel" maxlength="30" placeholder="Enter phone number" data-i18n-placeholder="phonePlaceholder" />
+          </div>
+          <div class="field-group">
+            <label for="shopAddressInput" data-i18n="addressLabel">Address</label>
+            <textarea id="shopAddressInput" rows="2" maxlength="160" placeholder="Enter shop address" data-i18n-placeholder="addressPlaceholder"></textarea>
+          </div>
+          <div class="field-group">
+            <label for="languageInput" data-i18n="languageLabel">Language</label>
+            <select id="languageInput">
+              <option value="en" data-i18n="languageEnglish">English</option>
+              <option value="ar" data-i18n="languageArabic">العربية</option>
+              <option value="es" data-i18n="languageSpanish">Español</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="currencyInput" data-i18n="currencyLabel">Currency</label>
+            <select id="currencyInput">
+              <option value="PKR" data-i18n="currencyPKR">Pakistani Rupee (Rs.)</option>
+              <option value="INR" data-i18n="currencyINR">Indian Rupee (₹)</option>
+              <option value="USD" data-i18n="currencyUSD">US Dollar ($)</option>
+              <option value="EUR" data-i18n="currencyEUR">Euro (€)</option>
+              <option value="GBP" data-i18n="currencyGBP">British Pound (£)</option>
+              <option value="AED" data-i18n="currencyAED">UAE Dirham (د.إ)</option>
+              <option value="SAR" data-i18n="currencySAR">Saudi Riyal (﷼)</option>
+              <option value="BDT" data-i18n="currencyBDT">Bangladeshi Taka (৳)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="designInput" data-i18n="designLabel">Design</label>
+            <select id="designInput">
+              <option value="classic" data-i18n="designClassic">Classic</option>
+              <option value="counter" data-i18n="designCounter">Counter (light, workshop)</option>
+              <option value="fandeck" data-i18n="designFandeck">Fan deck (sidebar, paint chips)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="printerSizeInput" data-i18n="printerSizeLabel">Thermal Printer Size</label>
+            <select id="printerSizeInput">
+              <option value="80" data-i18n="printer80">80mm (wide)</option>
+              <option value="58" data-i18n="printer58">58mm (compact)</option>
+            </select>
+          </div>
+          <div class="section-heading">
+            <h2 data-i18n="changePasswordHeading">Change Password</h2>
+          </div>
+          <form id="changePasswordForm">
+            <div class="field-group">
+              <label for="currentPasswordInput" data-i18n="currentPasswordLabel">Current Password</label>
+              <input id="currentPasswordInput" type="password" autocomplete="current-password" required />
+            </div>
+            <div class="field-group">
+              <label for="newPasswordInput" data-i18n="newPasswordLabel">New Password</label>
+              <input id="newPasswordInput" type="password" autocomplete="new-password" required />
+            </div>
+            <div class="field-group">
+              <label for="confirmNewPasswordInput" data-i18n="confirmNewPasswordLabel">Confirm New Password</label>
+              <input id="confirmNewPasswordInput" type="password" autocomplete="new-password" required />
+            </div>
+            <p id="changePasswordMessage" class="form-message" aria-live="polite"></p>
+            <button id="changePasswordBtn" type="submit" class="secondary-btn full-width" data-i18n="changePasswordBtn">Change Password</button>
+          </form>
+          <div class="section-heading">
+            <h2 data-i18n="recoveryQuestionHeading">Recovery Question</h2>
+          </div>
+          <form id="recoveryQuestionForm">
+            <p id="currentRecoveryQuestionText" class="auth-recovery-question hidden"></p>
+            <div class="field-group">
+              <label for="recoveryCurrentPasswordInput" data-i18n="currentPasswordLabel">Current Password</label>
+              <input id="recoveryCurrentPasswordInput" type="password" autocomplete="current-password" required />
+            </div>
+            <div class="field-group">
+              <label for="recoveryQuestionInput" data-i18n="authSecurityQuestionLabel">Security Question</label>
+              <input id="recoveryQuestionInput" type="text" maxlength="200" autocomplete="off" placeholder="e.g. What was your first pet's name?" data-i18n-placeholder="authSecurityQuestionPlaceholder" required />
+            </div>
+            <div class="field-group">
+              <label for="recoveryAnswerInput" data-i18n="authSecurityAnswerLabel">Security Answer</label>
+              <input id="recoveryAnswerInput" type="text" maxlength="200" autocomplete="off" placeholder="Your answer" data-i18n-placeholder="authSecurityAnswerPlaceholder" required />
+            </div>
+            <p id="recoveryQuestionMessage" class="form-message" aria-live="polite"></p>
+            <button id="saveRecoveryQuestionBtn" type="submit" class="secondary-btn full-width" data-i18n="saveRecoveryQuestionBtn">Save Recovery Question</button>
+          </form>
+          <div class="field-group">
+            <button id="logoutBtn" type="button" class="secondary-btn full-width" data-i18n="logout">Log Out</button>
+          </div>
+        </div>
+        <span id="currentDateDisplay" class="current-date-display"></span>
+      </header>
+
+      <nav class="tab-bar" role="tablist" aria-label="Sections">
+        <button type="button" class="tab-btn" role="tab" data-tab-target="dashboard" data-i18n="tabDashboard">Dashboard</button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="bill"><span data-i18n="tabBill">Current Bill</span> <span id="billTabCount" class="tab-count hidden">0</span></button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="inventory" data-i18n="tabInventory">Inventory</button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="add-product" id="addProductTabBtn" data-i18n="tabAddProduct">Add Product</button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="history" data-i18n="tabHistory">Previous Bills</button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="customers" data-i18n="tabCustomers">Customers</button>
+        <button type="button" class="tab-btn" role="tab" data-tab-target="analysis" data-i18n="tabAnalysis">Sales Analysis</button>
+        <button id="startNewDayBtn" type="button" class="secondary-btn tab-bar-action" data-i18n="startNewDay">Start New Day</button>
+      </nav>
+
+      <main id="appLayout" class="layout">
+        <section class="card dashboard-card" data-tab="dashboard">
+          <div class="section-heading">
+            <h2 data-i18n="dashboardHeading">Dashboard</h2>
+            <div class="inventory-actions">
+              <button id="backupNowBtn" type="button" class="secondary-btn" data-i18n="backupNow">Backup Now</button>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box sales-box">
+              <span data-i18n="statTodayRevenue">Today's Revenue</span>
+              <strong id="todaySalesStat">Rs. 0</strong>
+            </div>
+            <div class="stat-box revenue-box">
+              <span data-i18n="statTotalRevenue">Total Revenue</span>
+              <strong id="totalRevenueStat">Rs. 0</strong>
+            </div>
+            <div class="stat-box profit-box">
+              <span data-i18n="statTodayProfit">Today's Profit</span>
+              <strong id="todayProfitStat">Rs. 0</strong>
+            </div>
+            <div class="stat-box monthly-profit-box">
+              <span data-i18n="statMonthlyProfit">Monthly Profit</span>
+              <strong id="monthlyProfitStat">Rs. 0</strong>
+              <button id="resetMonthlyProfitBtn" type="button" class="stat-reset-btn" data-i18n="resetMonth">Reset Month</button>
+            </div>
+            <div class="stat-box">
+              <span data-i18n="statTodayBills">Today's Bills</span>
+              <strong id="todayBillsStat">0</strong>
+            </div>
+            <div class="stat-box">
+              <span data-i18n="statTotalProducts">Total Products</span>
+              <strong id="totalProductsStat">0</strong>
+            </div>
+            <div class="stat-box warning-box">
+              <span data-i18n="statLowStock">Low Stock</span>
+              <strong id="lowStockStat">0</strong>
+            </div>
+            <div class="stat-box credit-box">
+              <span data-i18n="statCreditOutstanding">Credit Outstanding</span>
+              <strong id="creditOutstandingStat">Rs. 0</strong>
+            </div>
+          </div>
+
+          <div class="dashboard-insights">
+            <div class="insight-panel">
+              <h3 data-i18n="insightBestSellers">Best-selling Products</h3>
+              <div id="bestSellersList" class="insight-list"></div>
+            </div>
+            <div class="insight-panel">
+              <h3 data-i18n="insightRecentTransactions">Recent Transactions</h3>
+              <div id="recentTransactionsList" class="insight-list"></div>
+            </div>
+            <div class="insight-panel">
+              <h3 data-i18n="insightLowStock">Low-stock Products</h3>
+              <div id="lowStockProductsList" class="insight-list"></div>
+            </div>
+            <div class="insight-panel out-of-stock-panel">
+              <h3 data-i18n="insightOutOfStock">Out-of-stock Products</h3>
+              <div id="outOfStockProductsList" class="insight-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="inventory-card" class="card inventory-card" data-tab="inventory">
+          <div class="section-heading">
+            <h2 data-i18n="inventoryHeading">Products / Inventory</h2>
+          </div>
+
+          <div class="inventory-toolbar">
+            <select id="categoryFilterInput" aria-label="Filter inventory by section" data-i18n-aria-label="ariaFilterSection">
+              <option value="all" data-i18n="allSections">All sections</option>
+              <option value="Hardware" data-i18n="categoryHardware">Hardware</option>
+              <option value="Paints" data-i18n="categoryPaints">Paints</option>
+              <option value="Cenentry" data-i18n="categoryCenentry">Cenentry</option>
+            </select>
+            <select id="stockFilterInput" aria-label="Filter inventory by stock" data-i18n-aria-label="ariaFilterStock">
+              <option value="all" data-i18n="stockAll">All stock</option>
+              <option value="low" data-i18n="stockLow">Low stock</option>
+              <option value="out" data-i18n="stockOut">Out of stock</option>
+              <option value="available" data-i18n="stockAvailable">In stock</option>
+            </select>
+            <select id="inventorySortInput" aria-label="Sort inventory" data-i18n-aria-label="ariaSortInventory">
+              <option value="name" data-i18n="sortName">Sort: Name</option>
+              <option value="price-low" data-i18n="sortPriceLow">Sort: Price low to high</option>
+              <option value="price-high" data-i18n="sortPriceHigh">Sort: Price high to low</option>
+              <option value="stock-low" data-i18n="sortStockLow">Sort: Stock low to high</option>
+              <option value="stock-high" data-i18n="sortStockHigh">Sort: Stock high to low</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="thProduct">Product</th>
+                  <th data-i18n="thCategory">Category</th>
+                  <th data-i18n="thUnit">Unit</th>
+                  <th data-i18n="thPurchaseRate">Purchase Rate</th>
+                  <th data-i18n="thSellingRate">Selling Rate</th>
+                  <th data-i18n="thStock">Stock</th>
+                  <th data-i18n="thActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="product-form-card" class="card product-form-card" data-tab="add-product">
+          <div class="section-heading">
+            <h2 id="productFormTitle" data-i18n="addProduct">Add Product</h2>
+          </div>
+
+          <form id="productForm">
+            <div class="field-group">
+              <label for="productNameInput" data-i18n="productNameLabel">Product Name</label>
+              <input id="productNameInput" type="text" placeholder="Enter product name" data-i18n-placeholder="productNamePlaceholder" />
+            </div>
+
+            <div class="field-group">
+              <label for="productPriceInput" data-i18n="productPriceLabel">Product Rate / Price</label>
+              <input id="productPriceInput" type="text" inputmode="decimal" placeholder="Enter price in Rs." data-i18n-placeholder="productPricePlaceholder" />
+            </div>
+
+            <div class="field-group">
+              <label for="productPurchasePriceInput" data-i18n="productPurchasePriceLabel">Purchase Price / Cost</label>
+              <input id="productPurchasePriceInput" type="text" inputmode="decimal" placeholder="Enter buying cost in Rs." data-i18n-placeholder="productPurchasePricePlaceholder" />
+            </div>
+
+            <div class="field-group">
+              <label for="productStockInput" data-i18n="productStockLabel">Quantity / Stock</label>
+              <input id="productStockInput" type="number" min="0" step="1" placeholder="Enter available stock" data-i18n-placeholder="productStockPlaceholder" />
+            </div>
+
+            <div class="field-group">
+              <label for="productCategoryInput" data-i18n="productCategoryLabel">Category</label>
+              <select id="productCategoryInput">
+                <option value="Hardware" data-i18n="categoryHardware">Hardware</option>
+                <option value="Paints" data-i18n="categoryPaints">Paints</option>
+                <option value="Cenentry" data-i18n="categoryCenentry">Cenentry</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="productUnitInput" data-i18n="productUnitLabel">Unit</label>
+              <select id="productUnitInput">
+                <option value="piece" data-i18n="unitPiece">Piece</option>
+                <option value="kg" data-i18n="unitKg">Kilogram</option>
+                <option value="g" data-i18n="unitG">Gram</option>
+                <option value="litre" data-i18n="unitLitre">Litre</option>
+                <option value="ml" data-i18n="unitMl">Millilitre</option>
+                <option value="pack" data-i18n="unitPack">Pack</option>
+                <option value="dozen" data-i18n="unitDozen">Dozen</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="productThresholdInput" data-i18n="productThresholdLabel">Low-stock threshold</label>
+              <input id="productThresholdInput" type="number" min="0" step="1" value="5" placeholder="Alert below this stock" data-i18n-placeholder="productThresholdPlaceholder" />
+            </div>
+
+            <div class="form-actions">
+              <button id="saveProductBtn" type="submit" class="primary-btn" data-i18n="saveProduct">Save Product</button>
+              <button id="cancelEditBtn" type="button" class="secondary-btn hidden" data-i18n="cancel">Cancel</button>
+            </div>
+
+            <p id="formMessage" class="form-message" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="card search-card" data-tab="bill">
+          <div class="section-heading">
+            <h2 data-i18n="searchProductsHeading">Search Products</h2>
+          </div>
+
+          <div class="quick-scan-wrap">
+            <label for="quickScanInput" data-i18n="quickScanLabel">Quick Scan</label>
+            <input id="quickScanInput" type="text" placeholder="Scan product ID or exact name, then press Enter" autocomplete="off" data-i18n-placeholder="quickScanPlaceholder" />
+          </div>
+
+          <div class="search-box-wrap">
+            <input id="searchInput" type="text" placeholder="Search product by name..." autocomplete="off" data-i18n-placeholder="searchPlaceholder" />
+          </div>
+
+          <div id="searchResults" class="search-results" aria-live="polite"></div>
+        </section>
+
+        <section id="bill-card" class="card bill-card" data-tab="bill">
+          <div class="section-heading">
+            <h2 data-i18n="currentBillHeading">Current Bill</h2>
+          </div>
+
+          <div id="billEditBanner" class="bill-edit-banner hidden">
+            <span id="billEditBannerText"></span>
+            <button type="button" id="cancelBillEditBtn" class="small-btn" data-action="cancel-bill-edit" data-i18n="cancelEditingBill">Cancel</button>
+          </div>
+
+          <div id="billItemsList" class="bill-items-list"></div>
+
+          <div class="bill-summary-row">
+            <span data-i18n="grandTotal">Grand Total</span>
+            <strong id="billGrandTotal">Rs. 0</strong>
+          </div>
+
+          <div class="payment-fields">
+            <div class="field-group">
+              <label for="paymentMethodInput" data-i18n="paymentMethodLabel">Payment Method</label>
+              <select id="paymentMethodInput">
+                <option value="Cash" data-i18n="paymentCash">Cash</option>
+                <option value="Card" data-i18n="paymentCard">Card</option>
+                <option value="Mobile" data-i18n="paymentMobile">Mobile</option>
+                <option value="Credit" data-i18n="paymentCredit">Credit (Khata)</option>
+              </select>
+            </div>
+            <div id="creditCustomerGroup" class="field-group hidden">
+              <label for="creditCustomerInput" data-i18n="creditCustomerLabel">Bill To Customer</label>
+              <select id="creditCustomerInput">
+                <option value="" data-i18n="selectCustomerOption">Select a customer...</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="discountInput" data-i18n="discountLabel">Discount (Rs.)</label>
+              <input id="discountInput" type="text" inputmode="decimal" autocomplete="off" value="0" placeholder="0" />
+            </div>
+            <div class="field-group">
+              <label for="taxInput" data-i18n="taxLabel">Tax (%)</label>
+              <input id="taxInput" type="text" inputmode="decimal" autocomplete="off" value="0" placeholder="0" />
+            </div>
+            <div class="field-group">
+              <label for="amountPaidInput" id="amountPaidLabel" data-i18n="amountPaidLabel">Amount Paid (Rs.)</label>
+              <input id="amountPaidInput" type="text" inputmode="decimal" autocomplete="off" placeholder="Enter payment" data-i18n-placeholder="amountPaidPlaceholder" />
+            </div>
+            <div id="customerNameGroup" class="field-group">
+              <label for="customerNameInput"><span data-i18n="customerNameLabel">Customer Name</span> <span class="optional-label" data-i18n="optionalLabel">Optional</span></label>
+              <input id="customerNameInput" type="text" maxlength="80" placeholder="Walk-in customer" data-i18n-placeholder="walkInCustomer" />
+            </div>
+            <div id="customerPhoneGroup" class="field-group">
+              <label for="customerPhoneInput"><span data-i18n="customerPhoneLabel">Customer Phone</span> <span class="optional-label" data-i18n="optionalLabel">Optional</span></label>
+              <input id="customerPhoneInput" type="tel" maxlength="30" placeholder="Phone number" data-i18n-placeholder="phoneNumberPlaceholder" />
+            </div>
+          </div>
+
+          <div id="paymentSummary" class="payment-summary" aria-live="polite">
+            <span><span data-i18n="amountToPay">Amount to pay:</span> <strong id="amountDueValue">Rs. 0</strong></span>
+            <span><span id="changeLabel" data-i18n="changeLabel">Change:</span> <strong id="changeValue">Rs. 0</strong></span>
+          </div>
+
+          <button id="generateBillBtn" type="button" class="primary-btn full-width" data-i18n="generateBill">OK / Generate Bill</button>
+          <button id="newBillBtn" type="button" class="secondary-btn full-width hidden" data-i18n="newBill">New Bill</button>
+          <p id="dayResetMessage" class="form-message" aria-live="polite"></p>
+        </section>
+
+        <section class="card receipt-card" data-tab="bill">
+          <div class="section-heading">
+            <h2 data-i18n="generatedBillHeading">Generated Bill</h2>
+          </div>
+          <div id="receiptContainer" class="receipt-container"></div>
+          <button id="exportReceiptBtn" type="button" class="secondary-btn full-width" data-i18n="exportReceipt">Export Receipt</button>
+        </section>
+
+        <section class="card history-card" data-tab="history">
+          <div class="section-heading">
+            <h2 data-i18n="previousBillsHeading">Previous Bills</h2>
+            <button id="exportSalesCsvBtn" type="button" class="secondary-btn" data-i18n="exportCsv">Export CSV</button>
+          </div>
+          <div id="salesHistoryList" class="sales-history-list"></div>
+        </section>
+
+        <section class="card" data-tab="customers">
+          <div class="section-heading">
+            <h2 data-i18n="customersHeading">Credit Customers</h2>
+          </div>
+          <form id="addCustomerForm" class="customer-add-form">
+            <input id="newCustomerNameInput" type="text" maxlength="80" placeholder="Customer name" data-i18n-placeholder="customerNamePlaceholder" required />
+            <input id="newCustomerPhoneInput" type="tel" maxlength="30" placeholder="Phone (optional)" data-i18n-placeholder="customerPhonePlaceholderOptional" />
+            <button type="submit" class="secondary-btn" data-i18n="addCustomerBtn">Add Customer</button>
+          </form>
+          <p id="customerFormMessage" class="form-message" aria-live="polite"></p>
+          <div id="customersList" class="customers-list"></div>
+        </section>
+
+        <section class="card analysis-page-card" data-tab="analysis">
+          <div class="section-heading">
+            <h2 data-i18n="salesAnalysisHeading">Sales Analysis</h2>
+            <div class="analysis-toggle" role="tablist" aria-label="Analysis period">
+              <button type="button" class="period-btn active" data-period="monthly" data-i18n="periodMonthly">Monthly</button>
+              <button type="button" class="period-btn" data-period="yearly" data-i18n="periodYearly">Yearly</button>
+            </div>
+          </div>
+          <div class="analysis-summary">
+            <span id="trendBadge" class="trend-badge neutral">–</span>
+            <span id="trendDetail" class="trend-detail"></span>
+          </div>
+          <div class="chart-wrap">
+            <svg id="salesChart" class="sales-chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-labelledby="trendDetail"></svg>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,499 @@
+/* Counter: workshop signage for a hardware, paint and cement shop.
+   Concrete, graphite and safety yellow, set in Bahnschrift (built into Windows). */
+
+:root {
+  --bg: #dadbd6;
+  --card: #f7f7f4;
+  --primary: #26282b;
+  --primary-dark: #26282b;
+  --accent: #f5c400;
+  --danger: #c8322b;
+  --text: #26282b;
+  --muted: #61646a;
+  --border: #c4c6c0;
+  --shadow: none;
+  --success: #2e7d4f;
+  --warning: #b86e00;
+  --steel: #3d5a73;
+  --yellow: #f5c400;
+  --yellow-soft: #fff4bf;
+  --font: "Bahnschrift", "DIN Alternate", "Arial Narrow", "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font);
+}
+
+:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+/* ---------- header with hazard stripe: the one loud element ---------- */
+.topbar {
+  border-radius: 6px 6px 0 0;
+  background: var(--primary);
+  padding: 22px 26px 30px;
+  box-shadow: none;
+}
+
+.topbar::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0 14px, var(--primary) 14px 28px);
+  content: "";
+}
+
+.eyebrow {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.85rem;
+  color: var(--yellow);
+  opacity: 1;
+}
+
+.topbar h1 {
+  font-stretch: condensed;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  letter-spacing: -0.01em;
+}
+
+.shop-display span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8rem;
+}
+
+.shop-display strong {
+  font-stretch: condensed;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.topbar-action {
+  border-radius: 4px;
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.topbar-action:hover {
+  background: var(--yellow);
+  color: var(--primary);
+}
+
+.shop-settings-panel {
+  border-radius: 4px;
+  border: 2px solid var(--primary);
+  box-shadow: 6px 6px 0 rgba(38, 40, 43, 0.25);
+}
+
+/* ---------- tabs read like hanging price tags ---------- */
+.tab-bar {
+  margin-top: 0;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 0 0 6px 6px;
+  background: #3a3c40;
+  box-shadow: none;
+}
+
+.tab-btn {
+  border-radius: 3px;
+  color: #d4d5d1;
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: var(--yellow);
+  color: var(--primary);
+  box-shadow: inset 4px 0 0 var(--primary);
+}
+
+.tab-count {
+  background: var(--danger);
+  border-radius: 3px;
+}
+
+.tab-btn.active .tab-count {
+  background: var(--primary);
+  color: var(--yellow);
+}
+
+.tab-bar .secondary-btn {
+  background: transparent;
+  color: #d4d5d1;
+  border: 1px solid #6b6e73;
+}
+
+.tab-bar .secondary-btn:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+/* ---------- panels ---------- */
+.dashboard-card,
+.inventory-card,
+.product-form-card,
+.search-card,
+.bill-card,
+.receipt-card,
+.history-card {
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  padding: 22px;
+}
+
+.section-heading {
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.section-heading h2 {
+  font-stretch: condensed;
+  font-weight: 700;
+  font-size: 1.55rem;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- dashboard numbers ---------- */
+/* One ruled sheet of figures; the outlines overlap so every cell has a hairline. */
+.stats-grid {
+  gap: 0;
+  padding: 1px 0 0 1px;
+}
+
+.stat-box,
+.sales-box,
+.revenue-box,
+.profit-box,
+.monthly-profit-box,
+.warning-box {
+  border: none;
+  border-radius: 0;
+  background: var(--card);
+  padding: 18px 18px 20px;
+  margin: -1px 0 0 -1px;
+  outline: 1px solid var(--border);
+}
+
+.sales-box {
+  background: var(--yellow-soft);
+}
+
+.warning-box {
+  background: #fbe3df;
+}
+
+.stat-box span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.stat-box strong {
+  font-stretch: condensed;
+  font-weight: 700;
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.warning-box strong {
+  color: var(--danger);
+}
+
+.stat-reset-btn {
+  border-radius: 3px;
+}
+
+.insight-panel {
+  border-radius: 4px;
+  background: #fff;
+  border-top: 4px solid var(--steel);
+}
+
+.out-of-stock-panel {
+  background: #fff;
+  border-color: var(--border);
+  border-top-color: var(--danger);
+}
+
+.insight-panel h3 {
+  font-stretch: condensed;
+  font-size: 1.1rem;
+}
+
+.insight-row {
+  font-size: 0.92rem;
+}
+
+.insight-row strong {
+  color: var(--primary);
+}
+
+/* ---------- tables ---------- */
+th {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.9rem;
+  background: var(--primary);
+  color: #e9eae6;
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background: var(--yellow-soft);
+}
+
+.low-stock-row {
+  background: #fff8d9;
+}
+
+.out-of-stock-row {
+  background: #fbe3df;
+  color: #8a1f19;
+}
+
+.stock-badge {
+  border-radius: 3px;
+  text-transform: none;
+  font-size: 0.78rem;
+}
+
+.stock-badge.low {
+  background: var(--yellow);
+  color: var(--primary);
+}
+
+.stock-badge.out {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ---------- buttons and fields ---------- */
+.small-btn,
+.primary-btn,
+.secondary-btn,
+.remove-btn,
+.qty-btn,
+.search-add-btn {
+  border-radius: 4px;
+  font-family: var(--font);
+}
+
+.small-btn:hover,
+.primary-btn:hover,
+.secondary-btn:hover,
+.remove-btn:hover,
+.qty-btn:hover,
+.search-add-btn:hover {
+  transform: none;
+}
+
+.primary-btn {
+  background: var(--yellow);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 14px 18px;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+}
+
+.primary-btn:hover {
+  background: #ffd21f;
+}
+
+.primary-btn:active {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.primary-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: #e6e7e2;
+  border: 1px solid var(--border);
+}
+
+.secondary-btn:hover {
+  border-color: var(--primary);
+}
+
+.small-btn {
+  background: #e3e9ee;
+  color: var(--steel);
+  font-weight: 600;
+}
+
+.small-btn.delete-btn,
+.remove-btn {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid #e3a7a2;
+}
+
+.small-btn.delete-btn:hover,
+.remove-btn:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.search-add-btn {
+  background: var(--primary);
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+.search-add-btn:disabled {
+  background: #9a9c98;
+  color: #e6e7e2;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  border-radius: 4px;
+  background: #fff;
+  border: 1px solid #b3b5af;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid var(--yellow);
+  outline-offset: 0;
+  border-color: var(--primary);
+}
+
+label {
+  font-weight: 600;
+}
+
+/* ---------- billing ---------- */
+.quick-scan-wrap {
+  border: 2px dashed var(--primary);
+  border-radius: 4px;
+  background: var(--yellow-soft);
+}
+
+.quick-scan-wrap label {
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.search-product-row,
+.bill-item-row {
+  border-radius: 4px;
+  background: #fff;
+}
+
+.bill-item-row {
+  border-left: 4px solid var(--yellow);
+}
+
+.qty-controls {
+  border-radius: 4px;
+}
+
+.qty-btn {
+  background: #e6e7e2;
+}
+
+.bill-empty {
+  border-radius: 4px;
+  background: transparent;
+  border: 1px dashed #a9aba5;
+}
+
+.bill-summary-row {
+  margin: 0 -22px 16px;
+  padding: 14px 22px;
+  border-top: none;
+  background: var(--primary);
+  color: #e9eae6;
+}
+
+.bill-summary-row strong {
+  color: var(--yellow);
+  font-stretch: condensed;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.payment-summary {
+  border-radius: 4px;
+  background: #ecede8;
+  border: 1px solid var(--border);
+}
+
+.payment-summary strong {
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.receipt {
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 1px 0 var(--border), 4px 4px 0 rgba(38, 40, 43, 0.12);
+}
+
+/* ---------- history ---------- */
+.saved-sale {
+  border-radius: 4px;
+  background: #fff;
+}
+
+.bill-no-tag {
+  border-radius: 3px;
+  background: var(--yellow);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.form-message.success {
+  color: var(--success);
+}
+
+.connection-status.online {
+  color: #8fd6a8;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .bill-summary-row {
+    margin: 0 -22px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

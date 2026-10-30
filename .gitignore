@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+auth.txt
+*.exe
+backups/
+*.lnk
+sales.jsonl
+products.txt
+shop_name.txt

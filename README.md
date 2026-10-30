@@ -19,10 +19,11 @@ A small C++ backend (`backend.exe`) stores all data in plain files next to the e
 
 ## 📑 Table of Contents
 - [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Build the Backend](#-build-the-backend)
 - [Run Locally](#-run-locally)
 - [Designs](#-designs)
 - [Security](#-security)
-- [Build the Backend](#-build-the-backend)
 - [Data Files](#-data-files)
 - [Source Files](#-source-files)
 
@@ -37,6 +38,19 @@ A small C++ backend (`backend.exe`) stores all data in plain files next to the e
 - 📊 Dashboard with revenue, profit, best sellers and low-stock alerts
 - 🗂️ Automatic backups in the `backups` folder, plus a "Backup Now" button
 - 📤 Export sales history as CSV
+
+## ✅ Prerequisites
+- **Windows** (the backend uses `ws2_32` for networking)
+- **MinGW-w64 g++** (C++17) — only needed to build the backend from source
+- **Python 3** — only needed to run the security test suite
+
+> ℹ️ The compiled `backend.exe` is **not** included in this repo (binaries aren't versioned). You must build it once after cloning — see below.
+
+## 🛠️ Build the Backend
+```powershell
+g++ -std=c++17 -O2 -o backend.exe backend.cpp -lws2_32 -static
+```
+This produces `backend.exe` in the project folder. Data files (`products.txt`, `shop_name.txt`, `sales.jsonl`) and the `backups/` folder are created automatically the first time it runs.
 
 ## 🚀 Run Locally
 Double-click `run_shop.bat`, or start the backend yourself:
@@ -73,13 +87,6 @@ Run the test suite against an isolated copy:
 
 ```powershell
 python tests\security_test.py
-```
-
-## 🛠️ Build the Backend
-Requires MinGW-w64 g++:
-
-```powershell
-g++ -std=c++17 -O2 -o backend.exe backend.cpp -lws2_32 -static
 ```
 
 ## 🗄️ Data Files

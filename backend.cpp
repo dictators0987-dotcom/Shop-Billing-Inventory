@@ -457,8 +457,14 @@ Product* findProductById(const string& id) {
     return nullptr;
 }
 
+// First line of products.txt in the current format. Lets loadProducts() know for certain
+// that every line after it is 8-field records, instead of guessing the field width from
+// the line count - see the comment on parseProducts() for why that guess was unsafe.
+const string PRODUCTS_FORMAT_MARKER = "#products-v8";
+
 bool saveProducts() {
     ostringstream content;
+    content << PRODUCTS_FORMAT_MARKER << "\n";
     for (const auto& p : products) {
         content << p.id << "\n" << p.name << "\n" << formatNumber(p.price) << "\n" << p.stock << "\n"
             << p.category << "\n" << p.unit << "\n" << p.lowStockThreshold << "\n"
@@ -488,8 +494,14 @@ bool parseInt(const string& text, int& value) {
     }
 }
 
-// Parses products.txt using a fixed number of lines per product.
+// Parses product lines using a fixed number of lines per product.
 // 8 = current format, 7 = before purchase price existed, 4 = original id/name/price/stock format.
+// CAUTION: a line count that's a valid multiple of 8 is also a valid multiple of 4, so
+// calling this with fieldsPerProduct 7 or 4 against current-format data (e.g. because the
+// 8-field attempt failed due to one corrupted field) can "succeed" at misreading it as a
+// different, bogus set of products. Only loadProducts() may use 7/4 as a one-time
+// migration for files saved before PRODUCTS_FORMAT_MARKER existed - never as a fallback
+// for a file already known to be in the current format.
 bool parseProducts(const vector<string>& lines, size_t fieldsPerProduct, vector<Product>& result) {
     if (lines.empty() || lines.size() % fieldsPerProduct != 0) return false;
 
@@ -534,13 +546,32 @@ void loadProducts() {
     if (lines.empty()) return;
 
     vector<Product> loaded;
-    if (!parseProducts(lines, 8, loaded) && !parseProducts(lines, 7, loaded) && !parseProducts(lines, 4, loaded)) {
+    bool hasMarker = lines.front() == PRODUCTS_FORMAT_MARKER;
+    bool parsed;
+    if (hasMarker) {
+        // The file says it's current-format: parse strictly as 8 fields per product. Never
+        // fall back to 7/4 here - a line count divisible by 8 is also divisible by 4, so a
+        // corrupted 8-field file can otherwise be silently misread as valid-but-wrong data
+        // (see the warning on parseProducts()).
+        vector<string> productLines(lines.begin() + 1, lines.end());
+        parsed = parseProducts(productLines, 8, loaded);
+    } else {
+        // No marker: this file predates PRODUCTS_FORMAT_MARKER, so its field width is
+        // genuinely ambiguous and has to be guessed once, newest format first.
+        parsed = parseProducts(lines, 8, loaded) || parseProducts(lines, 7, loaded) || parseProducts(lines, 4, loaded);
+    }
+
+    if (!parsed) {
         productsFileUnreadable = true;
         cerr << "Warning: products.txt could not be read. It was left unchanged and product changes are disabled."
              << " Restore it from the backups folder and restart backend.exe." << endl;
         return;
     }
     products = loaded;
+    if (!hasMarker) {
+        // Upgrade the file to the marked format now, so this guess is never needed again.
+        saveProducts();
+    }
 
     // Continue numbering after the highest existing id so new products never reuse an id.
     for (const auto& p : products) {

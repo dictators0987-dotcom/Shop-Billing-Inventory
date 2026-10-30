@@ -8,3 +8,4 @@ backups/
 sales.jsonl
 products.txt
 shop_name.txt
+tests/last_results.json

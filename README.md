@@ -10,6 +10,7 @@
 ![CSS3](https://img.shields.io/badge/style-CSS3-1572B6?logo=css3&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows-0078D6?logo=windows&logoColor=white)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 </div>
 
@@ -18,6 +19,7 @@
 A small C++ backend (`backend.exe`) stores all data in plain files next to the executable; the web page talks to it on `http://localhost:8080`.
 
 ## 📑 Table of Contents
+- [Screenshots](#-screenshots)
 - [Features](#-features)
 - [Prerequisites](#-prerequisites)
 - [Build the Backend](#-build-the-backend)
@@ -26,6 +28,14 @@ A small C++ backend (`backend.exe`) stores all data in plain files next to the e
 - [Security](#-security)
 - [Data Files](#-data-files)
 - [Source Files](#-source-files)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+## 📸 Screenshots
+<!-- Add screenshots here, e.g.: -->
+<!-- ![Dashboard](screenshots/dashboard.png) -->
+<!-- ![Billing counter](screenshots/billing.png) -->
+*(coming soon)*
 
 ## ✨ Features
 - 📦 Add, update, and delete products (category, unit, purchase price, low-stock threshold)
@@ -106,6 +116,22 @@ python tests\security_test.py
 | `backend.cpp` | HTTP API, file storage and web page serving (uses `include/json.hpp`) |
 | `themes/` | Alternative designs |
 | `tests/security_test.py` | Security and robustness tests |
+
+## 🤝 Contributing
+Contributions are welcome!
+
+1. Fork the repo and create a branch for your change
+2. Keep changes focused — one feature or fix per pull request
+3. If you touch `backend.cpp`, run the security test suite before opening a PR:
+   ```powershell
+   g++ -std=c++17 -O2 -o backend.exe backend.cpp -lws2_32 -static
+   python tests\security_test.py
+   ```
+4. Describe what you changed and why in the PR description
+5. Open an issue first for larger changes, so the approach can be discussed before you invest time in it
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE) — you're free to use, modify, and distribute it, including commercially, as long as the copyright notice is kept.
 
 ---
 

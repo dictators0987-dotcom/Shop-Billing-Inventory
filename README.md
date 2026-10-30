@@ -32,10 +32,21 @@ A small C++ backend (`backend.exe`) stores all data in plain files next to the e
 - [License](#-license)
 
 ## 📸 Screenshots
-<!-- Add screenshots here, e.g.: -->
-<!-- ![Dashboard](screenshots/dashboard.png) -->
-<!-- ![Billing counter](screenshots/billing.png) -->
-*(coming soon)*
+
+**Dashboard**
+![Dashboard](screenshots/dashboard.png)
+
+**Billing Counter**
+![Billing counter](screenshots/billing.png)
+
+**Inventory**
+![Inventory](screenshots/inventory.png)
+
+**Previous Bills**
+![Previous bills](screenshots/previous-bills.png)
+
+**Sales Analysis**
+![Sales analysis](screenshots/sales-analysis.png)
 
 ## ✨ Features
 - 📦 Add, update, and delete products (category, unit, purchase price, low-stock threshold)
